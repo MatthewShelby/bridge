@@ -1,7 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Bridge MVP (Interchain Asset Transfer)</title>
+      <style>
+            :root {
+                  --dark: #212922;
+                  --semi-dark: #2c4930;
+                  --semi-light: #bbddbb;
+                  --light: #eafeaf;
+                  --step1: 20px;
+            }
 
+            body {
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .width-100 {
+                  width: 100%;
+            }
+
+            .header-frame {
+                  margin-bottom: 4rem;
+            }
+
+            .add-token {
+                  padding: 10px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  display: flex;
+                  border-width: 1px;
+            }
+
+            .add-token img {
+                  max-width: 32px;
+                  margin-right: 10px;
+            }
+
+            .add-token span {
+                  margin: auto;
+            }
+
+
+            .alarm::before {
+                  color: red;
+                  content: '▶';
+                  padding-right: 10px;
+            }
+
+            .left-pad {
+                  padding-left: var(--step1);
+            }
+
+            .transaction-frame {
+                  display: flex;
+            }
+
+            .action-frame {
+                  padding: var(--step1);
+            }
+
+            .action-box {
+                  border: var(--semi-dark) 4px solid;
+                  padding: var(--step1);
+            }
+
+
+
+            .page-frame {
+                  width: fit-content;
+            }
+
+            .transaction-description {
+                  justify-content: space-between;
+                  padding: var(--step1);
+                  border: var(--semi-dark) 4px solid;
+            }
+
+            .transaction-description p {
+                  font-size: large;
+                  font-weight: bold;
+            }
+
+
+
+            .description-part {
+                  padding: var(--step1);
+            }
+
+            .description-part button {
+                  width: 100%;
+                  height: 100%;
+                  padding: 20px 40px;
+            }
+
+            .description-part p {
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .description-frame {
+                  padding: var(--step1);
+
+            }
+
+            .step-frame {
+                  margin-top: 2rem;
+                  border-top: var(--semi-light) 4px solid;
+                  width: 100%;
+                  display: none;
+            }
+
+            .step-header {
+                  display: flex;
+            }
+
+            .step-name {
+                  padding: 10px;
+                  font-size: large;
+                  font-weight: bold;
+                  color: var(--semi-dark);
+                  background-color: var(--semi-light);
+                  border-radius: 0px 0px 10px 10px;
+            }
+
+            .step-description {
+                  padding: 10px;
+                  font-size: large;
+                  color: var(--semi-dark);
+
+
+            }
+
+            .pay-address-box {
+                  display: flex;
+                  justify-items: start;
+            }
+
+            .pay-address-box p {
+                  margin-top: 3px;
+                  margin-bottom: 0%;
+                  font-weight: normal;
+            }
+
+            .copy-btn {
+                  cursor: pointer;
+                  border: var(--dark) 1px solid;
+                  padding: 4px 4px 0px 4px;
+                  border-radius: 4px;
+                  margin-left: 1rem;
+            }
+
+            .qr-frame {
+                  display: flex;
+                  justify-content: center;
+                  padding: 1rem;
+                  padding-top: 2rem;
+            }
+
+            .qr-box {
+                  border: var(--dark) 2px solid;
+                  border-radius: 12px;
+                  padding: 2rem;
+                  background-color: var(--semi-light);
+
+            }
+
+            .pay-warning p {
+                  font-size: medium;
+                  font-weight: normal;
+                  max-width: 400px;
+            }
+
+            .pay-warning p::before {
+                  color: #ff8800;
+                  content: '▶';
+                  padding-right: 10px;
+            }
+
+            .orderid-frame {
+                  width: 100%;
+                  display: flex;
+            }
+
+            .orderid {
+                  margin: auto;
+            }
+
+            .orderid p {
+                  color: #ff8800;
+                  font-size: small;
+                  font-weight: normal;
+                  margin-top: 0px;
+            }
+
+            .transaction-description .normal-text {
+                  font-size: small;
+                  font-weight: normal;
+            }
+      </style>
 </head>
-<body>
 
-<hello world
+<body>
+      <div class="left-pad header-frame">
+            <h1>Bridge MVP</h1>
+            <h2>Interchain Asset Transfer</h2>
+
+            <br>
+            <h4 class="alarm">Please set your Metamask wallet on Ethereum Sepolia testnet.</h4>
+            <h4 class="alarm">Please set your Tron wallet on Tron Nile testnet.</h4>
+            <h4>Get free testnet TRX coin and USDT token on <a target="_blank" title="Tron Nile Faucet"
+                        href="https://nileex.io/join/getJoinPage">Nile Faucet</a>
+
+            </h4>
+            <br>
+            <button class="add-token" onclick="addUSDT()">
+                  <img src="https://decuplenft.com/assets/images/USDTlogo.png" alt="Tether Logo">
+                  <span>Add USDT (sepolia) token to Metamask Wallet</span>
+            </button>
+            <br>
+
+            <button class="add-token" onclick="tracking()">
+                  <span>Track Recent Orders</span>
+            </button>
+
+      </div>
+
+
+
+
+
+      <div class="page-frame">
+            <div class="step-frame" id="step-1-frame">
+                  <div class="step-header">
+                        <div class="step-name">Step 1</div>
+                        <div class="step-description">Choose Blockchain, token and amounts</div>
+                  </div>
+                  <div class="transaction-frame">
+                        <div class="action-frame">
+                              <div class="action-box">
+                                    <p>Select Origin Blockchain:</p>
+                                    <select name="Blockchain" id="origin-blockchain">
+                                          <option value="ethereum">Ethereum (Sepolia)</option>
+                                          <option value="tron">Tron (Nile)</option>
+                                    </select>
+                                    <br>
+                                    <p>Select Spending token:</p>
+                                    <select name="Token" id="origin-token">
+                                          <option value="ethereum-tether">Tether</option>
+                                    </select>
+                                    <br>
+                                    <p>Amount:</p>
+                                    <input type="number" id="input-amount">
+                                    <br>
+
+                              </div>
+                        </div>
+
+                        <br>
+                        <div class="action-frame">
+                              <div class="action-box  ">
+                                    <p>Select Destination Blockchain:</p>
+                                    <select name="Blockchain" id="destination-blockchain">
+                                          <option value="tron">Tron (Nile)</option>
+                                          <option value="ethereum">Ethereum (Sepolia)</option>
+
+                                    </select>
+                                    <br>
+                                    <p>Select Spending token:</p>
+                                    <select name="Token" id="destination-token">
+                                          <option value="tron-usdt">USDT</option>
+                                    </select>
+                                    <br>
+                                    <p>Amount:</p>
+                                    <input type="number" id="output-amount">
+                                    <br>
+
+                              </div>
+                        </div>
+
+
+                  </div>
+            </div>
+
+
+            <div class="step-frame" id="step-2-frame">
+                  <div class="step-header">
+                        <div class="step-name">Step 2</div>
+                        <div class="step-description">Confirm Blockchain, token and amounts</div>
+                  </div>
+                  <div class="description-frame">
+                        <div class="transaction-description">
+                              <div class="description-part">
+
+                                    <p style="margin-bottom: 0px;">
+                                          You will pay <span id="description-input-amount">0</span>
+                                          <span id="spending-token">Tether</span> on the
+                                          <span id="description-origin-blockchain">ethereum</span>
+
+                                          <br>
+
+                                          In order to receive <span id="description-output-amount">0</span>
+                                          <span id="receiving-token"> USDT </span> on the
+                                          <span class="description-destination-blockchain"> tron</span>.
+                                    </p>
+                              </div>
+                              <div class="description-part">
+                                    <button id="next-1">Next</button>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
+
+            <div class="step-frame" id="step-3-frame">
+                  <div class="step-header">
+                        <div class="step-name">Step 3</div>
+                        <div class="step-description">Set receiver</div>
+                  </div>
+
+                  <div class="description-frame">
+                        <div class="transaction-description">
+                              <div class="output-address-frame">
+                                    <div class="output-address">
+                                          <p>Enter the destination address on
+                                                <span class="description-destination-blockchain"> - </span>
+                                                Network here:
+                                          </p>
+                                          <input type="text" id="destination-address"
+                                                class="description-destination-blockchain-placeholder width-100"
+                                                placeholder="TJbduSQ5HBwRR4sWCYsPsA5eygUzxx6nQZ">
+                                    </div>
+                              </div>
+                              <div class="description-part">
+                                    <button id="next-2">Next</button>
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+
+
+
+
+            <div class="step-frame" id="step-4-frame">
+                  <div class="step-header">
+                        <div class="step-name">Step 4</div>
+                        <div class="step-description">Pay token</div>
+                  </div>
+
+                  <div class="description-frame">
+                        <div class="transaction-description">
+                              <div class="output-address-frame">
+                                    <div class="output-address">
+                                          <p>Send <span id="send-amount">-</span> To This address:
+                                                <span class="description-destination-blockchain"> -
+                                                </span>
+                                          </p>
+                                          <div class="pay-address-box">
+                                                <p id="pay-address">-</p>
+                                                <span class="copy-btn" onclick="copyAddress('pay-address')">
+                                                      <img src="./copyicon.svg" alt="copy-icon">
+                                                </span>
+                                          </div>
+                                          <div class="qr-frame">
+                                                <div class="qr-box">
+                                                      <div id="pay-qr"></div>
+                                                </div>
+                                          </div>
+                                          <div class="orderid-frame">
+                                                <div class="orderid">
+                                                      <p>Order id: <span id="order-id"></span></p>
+                                                </div>
+                                          </div>
+                                          <div class="pay-warning">
+                                                <p>This address is valid for you only for 4 Hours. Please repeat the
+                                                      process after the period or for next transaction.</p>
+                                                <p>Process of transferr into other blockchain will take a while. Based
+                                                      on the network traffic and liquidity provider, it might take up to
+                                                      10 minuts. </p>
+                                                <p>Transfering tokens to invalid address will end to losing funds.</p>
+                                          </div>
+                                    </div>
+                              </div>
+
+
+
+                        </div>
+                  </div>
+                  <textarea id="log" style="max-width: 500px;" rows="14" cols="40">
+
+                  </textarea>
+
+            </div>
+
+
+            <div class="step-frame" id="step-5-frame">
+                  <div class="step-header">
+                        <div class="step-name">Step 5</div>
+                        <div class="step-description">Transaction report</div>
+                  </div>
+
+                  <div class="description-frame">
+                        <div class="transaction-description">
+                              <div class="output-address-frame">
+                                    <div class="output-address">
+                                          <p id="tx-report-title">Transaction Confirmed. </p>
+                                          <p>Check out the transaction info on
+                                                <span id="scan-link"> --- </span>.
+                                                <br>
+                                          </p>
+                                          <br>
+                                          <h5>Transaction Hash:</h5>
+                                          <p class="normal-text" id="tx-hash">
+
+                                          </p>
+
+                                    </div>
+                              </div>
+
+
+
+                        </div>
+                  </div>
+
+            </div>
+
+
+
+
+
+            <div class="step-frame" id="step-6-frame">
+                  <div class="step-header">
+                        <div class="step-name">Step 6</div>
+                        <div class="step-description">Track Recent Orders</div>
+                  </div>
+
+                  <div class="description-frame">
+                        <div class="transaction-description">
+                              <div class="output-address-frame">
+                                    <div class="output-address">
+                                          <p>Enter Order Id:</p>
+                                          <br>
+                                          <input type="number" id="orderId-tracking">
+                                          <br>
+                                          <br>
+                                          <button onclick="checkOrderStatus()">Track</button>
+                                          <br>
+                                          <br>
+                                          <p id="order-tracking-result" class="normal-text"></p>
+
+
+                                    </div>
+                              </div>
+
+
+
+                        </div>
+                  </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <script src="./node_modules/tronweb/dist/TronWeb.js"></script>
+      <script src="./node_modules/sunweb/dist/SunWeb.js"></script>
+      <script>
+            var ethersJS;
+      </script>
+      <script type="module">
+            import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+            // Your code here...
+            ethersJS = ethers
+      </script>
+      <script src="./consts.js"></script>
+      <script src="./node_modules/jquery/dist/jquery.js"></script>
+      <script src="./node_modules/jquery.cookie/jquery.cookie.js"></script>
+      <script src="./jsfiles/qrcode.js"></script>
+      <script src="./jsfiles/qrcode.js"></script>
+
+
+
+      <script>
+            var step2Display = false
+            var step3Display = false
+            var step4Display = false
+            var step5Display = false
+            $(document).ready(() => {
+                  console.log('Document is ready.')
+                  $('#step-1-frame').show(1000)
+                  $('#input-amount').on('input', () => {
+                        console.log('cchange detected on inp amount')
+                        if (!step2Display) {
+                              $('#step-2-frame').show(1000)
+                              $('html, body').animate({
+                                    scrollTop: $("#step-1-frame").offset().top
+                              }, 1000);
+                              step2Display = true
+                        }
+
+                  })
+                  $('#output-amount').on('input', () => {
+                        console.log('cchange detected on inp amount')
+                        if (!step2Display) {
+                              $('#step-2-frame').show(1000)
+                              $('html, body').animate({
+                                    scrollTop: $("#step-1-frame").offset().top
+                              }, 1000);
+                              step2Display = true
+                        }
+
+                  })
+            })
+
+            function copyAddress(inp) {
+                  var copyText = document.getElementById(inp);
+                  // copyText.select();
+                  // copyText.setSelectionRange(0, 99999); // For mobile devices
+                  navigator.clipboard.writeText(copyText.innerText);
+            }
+
+
+
+
+            document.getElementById('input-amount').addEventListener('input', () => {
+                  var inp = document.getElementById('input-amount').value;
+                  let mid = inp * 98.5 / 100;
+                  let out = Math.floor((mid + Number.EPSILON) * 100) / 100
+                  document.getElementById('output-amount').value = out
+                  document.getElementById('description-output-amount').innerText = out
+                  document.getElementById('description-input-amount').innerText = inp
+            })
+
+            document.getElementById('output-amount').addEventListener('input', () => {
+                  var out = document.getElementById('output-amount').value;
+                  let mid = out / (98.5 / 100)
+                  let inp = Math.floor((mid + Number.EPSILON) * 100) / 100
+                  document.getElementById('input-amount').value = inp
+                  document.getElementById('description-input-amount').innerText = inp
+                  document.getElementById('description-output-amount').innerText = out
+            })
+
+
+            var selectedOriginBlockchain = 'ethereum'
+            document.getElementById('origin-blockchain').addEventListener('change', () => {
+
+                  selectedOriginBlockchain = $('#origin-blockchain').find(":selected").val()
+                  if (selectedOriginBlockchain == 'ethereum') {
+                        document.getElementById('origin-token').innerHTML = `
+      <option value="ethereum-tether">Tether</option>
+      `
+                        document.getElementById('spending-token').innerHTML = 'Tether'
+
+                  }
+                  if (selectedOriginBlockchain == 'tron') {
+                        document.getElementById('origin-token').innerHTML = `
+      <option value="tron-usdt">USDT</option>
+      `
+                        document.getElementById('spending-token').innerHTML = 'USDT'
+
+                  }
+
+                  document.getElementById('description-origin-blockchain').innerHTML = selectedOriginBlockchain
+            })
+
+            var selectedDestinationBlockchain = 'tron'
+            document.getElementById('destination-blockchain').addEventListener('change', () => {
+                  console.log('destination-blockchain => change - SDB: ' + selectedDestinationBlockchain)
+                  selectedDestinationBlockchain = $('#destination-blockchain').find(":selected").val()
+                  if (selectedDestinationBlockchain == 'ethereum') {
+                        document.getElementById('destination-token').innerHTML = '<option value="ethereum-tether">Tether</option>'
+                        document.getElementById('receiving-token').innerHTML = 'Tether'
+
+                  }
+                  if (selectedDestinationBlockchain == 'tron') {
+                        document.getElementById('destination-token').innerHTML = '<option value="tron-usdt">USDT</option>'
+                        document.getElementById('receiving-token').innerHTML = 'USDT'
+                  }
+
+                  writeOutputBlockchainNames(selectedDestinationBlockchain)
+            })
+
+
+            function writeOutputBlockchainNames(name) {
+                  var elements = document.getElementsByClassName('description-destination-blockchain');
+                  for (let i = 0; i < elements.length; i++) { const element = elements[i]; element.innerText = name; }
+            }
+
+            function writeOutputBlockchainPlaceHolder(name) {
+                  let placeholder = '0x66F8Ed0F87A59c7Dd55Ab5a822432f43A66b7eC7'
+                  if (name == 'tron') { placeholder = 'TJbduSQ5HBwRR4sWCYsPsA5eygUzxx6nQZ' } var
+                        elements = document.getElementsByClassName('description-destination-blockchain-placeholder'); for (let i = 0; i
+                              < elements.length; i++) {
+                        const element = elements[i]; element.placeholder = placeholder;
+                        element.addEventListener('focus', () => {
+                              element.placeholder = ''
+                        })
+
+                  }
+            }
+
+
+            document.getElementById('destination-token').addEventListener('change', () => {
+                  let destinationToken = document.getElementById('destination-token').value;
+                  document.getElementById('receiving-token').value = destinationToken
+            })
+
+
+
+            document.getElementById('next-1').addEventListener('click', () => {
+                  if (chechInputData()) {
+                        writeOutputBlockchainNames(document.getElementById('destination-blockchain').value)
+                        writeOutputBlockchainPlaceHolder(document.getElementById('destination-blockchain').value)
+                        if (!step3Display) {
+                              $('#step-3-frame').show(1000)
+                              $('html, body').animate({
+                                    scrollTop: $("#step-3-frame").offset().top
+                              }, 1000);
+                              step3Display = true
+                        }
+                  }
+            })
+
+            function chechInputData() {
+                  if (selectedOriginBlockchain == selectedDestinationBlockchain) {
+                        if (document.getElementById('origin-token').value == document.getElementById('destination-token').value) {
+                              window.alert('Input token and Output token can not be the same!')
+                              return false
+                        }
+                        return true
+                  }
+                  return true
+
+            }
+            document.getElementById('next-2').addEventListener('click', () => {
+
+                  let originBlockchain = $('#origin-blockchain').find(":selected").val()
+                  let destinationBlockchain = $('#destination-blockchain').find(":selected").val()
+                  let toeknIn = $('#origin-token').find(":selected").val()
+                  let toeknOut = $('#destination-token').find(":selected").val()
+                  console.info(originBlockchain, destinationBlockchain, toeknIn, toeknOut)
+                  let inputAmount = Number(document.getElementById('input-amount').value)
+                  if (originBlockchain == 'ethereum') {
+                        //call for an ethereum address
+
+                        const uuid = uuidv4();
+                        $.cookie('latest_uuid', uuid, { expires: 1 });
+                        let destinationAddress = document.getElementById('destination-address').value
+                        console.log('destinationAddress: ' + destinationAddress)
+                        var isAddressValid = validateTronAddress(destinationAddress);
+                        console.log('isAddressValid: ' + isAddressValid)
+
+                        if (isAddressValid) {
+
+                              // ajax call
+                              $.ajax({
+                                    method: 'GET',
+                                    url: baseURL + 'getAnEthereumAddress?tokenIn=Tether&destinationAddress=' + destinationAddress +
+                                          '&uuid=' + uuid + '&tokenOut=' + toeknOut + '&originBlockchain=' + originBlockchain +
+                                          '&inputAmount=' + inputAmount + '&destinationBlockchain=' + destinationBlockchain,
+
+                                    success: (res) => {
+                                          console.log('getAnEthereumAddress OK');
+                                          console.info(res)
+                                          if (res.data.UUID == uuid) {
+                                                console.log('Call result seems OK');
+                                                console.info(res.data.toPayAddress)
+                                                setPay(res.data)
+                                                $.cookie('latest_orderid', res.data.orderId, { expires: 1 });
+
+
+                                          } else {
+                                                window.alert('Response data seems to be interupted. Please refresh the page and repeat the process.')
+                                          }
+
+                                    },
+
+                                    error: (err) => {
+
+                                          console.info(err)
+                                          window.alert(err.responseJSON.message)
+                                    }
+
+                              })
+                        } else {
+                              window.alert('Destination address length is not valid.')
+                        }
+                  } else if (originBlockchain == 'tron') {
+                        //call for a Tron address
+
+                        const uuid = uuidv4();
+                        $.cookie('latest_uuid', uuid, { expires: 1 });
+                        let destinationAddress = document.getElementById('destination-address').value
+                        console.log('destinationAddress: ' + destinationAddress)
+                        var isAddressValid = validateEthereumAddress(destinationAddress);
+                        console.log('isAddressValid: ' + isAddressValid)
+
+                        if (isAddressValid) {
+
+                              // ajax call
+                              $.ajax({
+                                    method: 'GET',
+                                    url: baseURL + 'getATronAddress?tokenIn=' + toeknIn + '&destinationAddress=' + destinationAddress +
+                                          '&uuid=' + uuid + '&tokenOut=' + toeknOut + '&originBlockchain=' + originBlockchain +
+                                          '&inputAmount=' + inputAmount + '&destinationBlockchain=' + destinationBlockchain,
+
+                                    success: (res) => {
+                                          console.log('getA Tron Address OK');
+                                          console.info(res)
+                                          if (res.data.UUID == uuid) {
+                                                console.log('Call result seems OK');
+                                                console.info(res.data.toPayAddress)
+                                                setPay(res.data)
+                                                $.cookie('latest_orderid', res.data.orderId, { expires: 1 });
+
+                                          } else {
+                                                window.alert('Response data seems to be interupted. Please refresh the page and repeat the process.')
+                                          }
+
+                                    },
+
+                                    error: (err) => {
+
+                                          console.info(err)
+                                          window.alert(err.responseJSON.message)
+                                    }
+
+                              })
+                        } else {
+                              window.alert('Destination address is not valid.')
+                        }
+                  }
+            })
+
+
+            function setPay(data) {
+                  var qrcode = new QRCode(document.getElementById("pay-qr"), {
+                        text: data.toPayAddress,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#212922",
+                        colorLight: "#bbddbb",
+                        correctLevel: QRCode.CorrectLevel.H
+                  });
+
+
+                  $('#send-amount').text(data.inputAmount + ' ' + data.tokenIn + ' ' + ' on ' + data.originBlockchain + ' ')
+                  $('#pay-address').text(data.toPayAddress)
+                  $('#order-id').text(data.orderId || '000123')
+                  $('#log').text(JSON.stringify(data, null, 3))
+
+                  // cookie here
+                  if (!step4Display) {
+
+                        $('#step-4-frame').show(1000)
+                        $('html, body').animate({
+                              scrollTop: $("#step-4-frame").offset().top
+                        }, 1000);
+                        step4Display = true
+                  }
+                  checkOrderResult(data.orderId , null)
+            }
+
+            function uuidv4() {
+                  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+                        .replace(/[xy]/g, function (c) {
+                              const r = Math.random() * 16 | 0,
+                                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                              return v.toString(16);
+                        });
+            }
+            //spending-token
+            console.log(uuidv4())
+
+            var tron;// = window.tronWeb
+            function validateTronAddress(address) {
+                  if (address.length != 34) {
+                        return false;
+                  }
+                  return true;
+            }
+            function validateEthereumAddress(address) {
+                  return ethersJS.isAddress(address);
+            }
+
+            //#region OLD
+            // window.onload = async function () {
+            //       tron = window.tronWeb
+
+            //       validateTronAddress('TJbduSQ5HBwRR4sWCYsPsA5eygUzxx6nQZ')
+            // }
+            // const abi = `[{ "outputs": [{ "type": "uint256" }], "constant": true, "inputs": [{ "name": "who", "type":
+            // "address" }], "name": "balanceOf", "stateMutability": "View", "type": "Function" }, {
+            //       "outputs": [{
+            //             "type":
+            //                   "bool"
+            //       }], "inputs": [{ "name": "_to", "type": "address" }, { "name": "_value", "type": "uint256" }],
+            //             "name": "transfer", "stateMutability": "Nonpayable", "type": "Function"
+            // }]`;
+            // const USDTAddress = 'TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj'
+
+            // var tron;
+            // window.onload = async function () {
+            // if (!window.tronWeb) {
+            // const HttpProvider = TronWeb.providers.HttpProvider;
+            // const fullNode = new HttpProvider('https://api.trongrid.io');
+            // const solidityNode = new HttpProvider('https://api.trongrid.io');
+            // const eventServer = 'https://api.trongrid.io/';
+
+            // const tronWeb = new TronWeb(
+            // fullNode,
+            // solidityNode,
+            // eventServer,
+            // );
+            // window.tronWeb = tronWeb;
+            // } else {
+            // console.log('else')
+            // tron = window.tronWeb
+            // console.info(tron)
+            // var userAddress = tron.defaultAddress.base58
+            // document.getElementById('user-address').innerText = (userAddress)
+            // var balance = await tronWeb.trx.getBalance(userAddress);
+            // console.info(balance)
+            // document.getElementById('user-balance').innerText = (tron.fromSun(balance))
+            // let contract = await tronWeb.contract(abi, USDTAddress);
+            // let result = await contract.balanceOf(userAddress).call();
+            // let USDTBalance = tron.fromSun(result.toString(10));
+            // document.getElementById('USDT-balance').innerText = (USDTBalance)
+
+            // }
+            // };
+
+            // document.getElementById('send-USDT').addEventListener('click', () => {
+            // let receiver = document.getElementById('receiver-address').value
+            // let amount = document.getElementById('send-amount').value
+            // sendUSDT(receiver, tron.toSun(amount));
+            // })
+            //#endregion OLD
+
+            async function sendUSDT(receiverAddress, amount) {
+                  let contract = await tronWeb.contract(abi, USDTAddress);
+                  let txID = await contract.transfer(receiverAddress, amount).send();
+                  console.log('txID:')
+                  console.info(txID)
+                  // now you can visit web page https://nile.tronscan.org/#/transaction/${txID} to view the transaction                  detail.
+                  // or using code below:
+                  let result = await tronWeb.trx.getTransaction(txID);
+                  console.info(result)
+                  //"7a68afe072f14b35b3168d874d2fa29686267f944c8c64428f18dfe9c8dbc932"
+            }
+
+
+            async function addUSDT() {
+                  const tokenAddress = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06";
+                  const tokenSymbol = 'USDT';
+                  const tokenDecimals = 6;
+                  const tokenImage = 'https://decuplenft.com/assets/images/USDTlogo.png';
+
+                  try {
+                        // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+                        const wasAdded = await ethereum.request({
+                              method: 'wallet_watchAsset',
+                              params: {
+                                    type: 'ERC20', // Initially only supports ERC20, but eventually more!
+                                    options: {
+                                          address: tokenAddress, // The address that the token is at.
+                                          symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                                          decimals: tokenDecimals, // The number of decimals in the token
+                                          image: tokenImage, // A string url of the token logo
+                                    },
+                              },
+                        });
+
+                        if (wasAdded) {
+                              console.log('Thanks for your interest!');
+                        } else {
+                              console.log('Your loss!');
+                        }
+                  } catch (error) {
+                        console.log(error);
+                  }
+            }
+
+            function freeze() {
+                  $('#destination-blockchain').attr('disabled', 'disabled');
+                  $('#destination-token').attr('disabled', 'disabled');
+                  $('#output-amount').attr('readonly', 'readonly');
+
+                  $('#origin-blockchain').attr('disabled', 'disabled');
+                  $('#origin-token').attr('disabled', 'disabled');
+                  $('#input-amount').attr('readonly', 'readonly');
+            }
+
+
+            function checkOrderResult(orderId , tracking) {
+                  console.log('check order result')
+                  var checkInterval = setInterval(() => {
+                        $.ajax({
+                              url: baseURL + 'getStatus?orderId=' + orderId,
+                              method: "GET",
+                              success: ((res) => {
+                                    console.log('check order result. res:')
+                                    console.log(res)
+
+                                    if (res.data.status == 'waitToPayIn') {
+
+                                          // Show in case load from cookie:
+                                          // if (!step4Display) {
+
+                                          //       $('#step-4-frame').show(1000)
+                                          //       $('html, body').animate({
+                                          //             scrollTop: $("#step-4-frame").offset().top
+                                          //       }, 1000);
+                                          //       step4Display = true
+                                          // }
+
+
+                                          //tx-report-title
+                                          $('#tx-report-title').html('Order is waiting to been payed by user on the Origin Blockchain.')
+                                    } else if (res.data.status == "payOutDone") {
+
+                                          //scan-link
+                                          var line = ''
+                                          $('#tx-report-title').html('Transaction has been confirmed on the blockchain.')
+                                          if (res.data.destinationBlockchain == 'tron') {
+                                                console.log('check order tron OK')
+
+                                                line = `<a target=_blanck" href="https://nile.tronscan.org/#/transaction/${res.data.hash}" > Tron scan</a>`
+                                                $('#scan-link').html(line)
+                                                $('#tx-hash').html(`<span>${res.data.hash}</span>`)
+                                                clearInterval(checkInterval)
+
+                                          } else if (res.data.destinationBlockchain == 'ethereum') {
+                                                console.log('check order ethereum OK')
+                                                line = `<a target=_blanck" href="https://sepolia.etherscan.io/tx/${res.data.hash}" > Ether scan</a>`
+
+                                                $('#scan-link').html(line)
+                                                $('#tx-hash').html(`<span>${res.data.hash}</span>`)
+
+                                                clearInterval(checkInterval)
+                                          } else {
+                                                $('#tx-report-title').html('Order status is unknown')
+                                          }
+                                          //tx-hash
+
+
+                                         
+                                          if (!step5Display) {
+
+                                                $('#step-5-frame').show(1000)
+                                                $('html, body').animate({
+                                                      scrollTop: $("#step-5-frame").offset().top
+                                                }, 1000);
+                                                step5Display = true
+                                          }
+
+                                    }
+                                     if (tracking) {
+                                          //$('#order-tracking-result').
+                                          $('#order-tracking-result').text(`Status: ${res.data.status} - Hash: ${res.data.hash}`)
+                                          clearInterval(checkInterval)
+
+                                    }  
+                              }),
+                              error: ((err) => {
+                                    console.info(err)
+                                    if(tracking){
+                                          $('#order-tracking-result').text(err.responseJSON.message);
+                                                clearInterval(checkInterval)
+
+                                    }
+                              })
+                        })
+                  }, 5000);
+            }
+
+            var step6Display = false;
+            function tracking() {
+
+                  if (!step6Display) {
+
+                        $('#step-6-frame').show(1000)
+                        $('html, body').animate({
+                              scrollTop: $("#step-6-frame").offset().top
+                        }, 1000);
+                        step6Display = true
+                  }
+
+
+            }
+
+            function checkOrderStatus() {
+                  $('#order-tracking-result').text(`Retrieving Data ...`);
+                  var orderId = $('#orderId-tracking').val()
+                     checkOrderResult(orderId , 'tracking')
+                     
+            }
+      </script>
+
 </body>
+
+</html>
+
+<!-- 
+
+      <p>User Address: <span id="user-address">---</span></p>
+      <p>User Balance: <span id="user-balance">---</span> TRX</p>
+      <p>USDT Balance: <span id="USDT-balance">---</span> USDT</p>
+      <br>
+      <input type="text" placeholder="Receiver address" id="receiver-address">
+      <br>
+      example:
+      <br>
+      <p>TJbduSQ5HBwRR4sWCYsPsA5eygUzxx6nQY</p>
+      <br>
+      <input type="number" value="0" id="send-amount">
+      <br>
+      <button id="send-USDT">Send</button> -->
