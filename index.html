@@ -446,7 +446,8 @@
                                           <input type="number" id="orderId-tracking">
                                           <br>
                                           <br>
-                                          <button onclick="checkOrderStatus()">Track</button>
+                                          <button onclick="checkOrderStatus()">Track</button> | 
+                                          <button onclick="checkOrderOnCookie()">Cookie?</button>
                                           <br>
                                           <br>
                                           <p id="order-tracking-result" class="normal-text"></p>
@@ -483,8 +484,8 @@
 
 
 
-      <script src="./node_modules/tronweb/dist/TronWeb.js"></script>
-      <script src="./node_modules/sunweb/dist/SunWeb.js"></script>
+      <!-- <script src="./node_modules/tronweb/dist/TronWeb.js"></script>
+      <script src="./node_modules/sunweb/dist/SunWeb.js"></script> -->
       <script>
             var ethersJS;
       </script>
@@ -494,8 +495,18 @@
             ethersJS = ethers
       </script>
       <script src="./consts.js"></script>
-      <script src="./node_modules/jquery/dist/jquery.js"></script>
-      <script src="./node_modules/jquery.cookie/jquery.cookie.js"></script>
+
+      <!-- <script src="./node_modules/jquery/dist/jquery.js"></script>
+      <script src="./node_modules/jquery.cookie/jquery.cookie.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
+      integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"
+            integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
       <script src="./jsfiles/qrcode.js"></script>
       <script src="./jsfiles/qrcode.js"></script>
 
@@ -1015,6 +1026,14 @@
                   var orderId = $('#orderId-tracking').val()
                      checkOrderResult(orderId , 'tracking')
                      
+            }
+            function checkOrderOnCookie() {
+                  let cookieOrderId = $.cookie('latest_orderid')
+                  if (cookieOrderId) {
+                        $('#order-tracking-result').text(`You latest order Id moght be: ${cookieOrderId}`);
+                  }else {
+                        $('#order-tracking-result').text(`Could not find anything in cookies. `);
+                  }
             }
       </script>
 
