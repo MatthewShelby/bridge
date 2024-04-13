@@ -446,7 +446,7 @@
                                           <input type="number" id="orderId-tracking">
                                           <br>
                                           <br>
-                                          <button onclick="checkOrderStatus()">Track</button> | 
+                                          <button onclick="checkOrderStatus()">Track</button> |
                                           <button onclick="checkOrderOnCookie()">Cookie?</button>
                                           <br>
                                           <br>
@@ -498,16 +498,15 @@
 
       <!-- <script src="./node_modules/jquery/dist/jquery.js"></script>
       <script src="./node_modules/jquery.cookie/jquery.cookie.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
-      integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
+            integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"
             integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-      <script src="./jsfiles/qrcode.js"></script>
       <script src="./jsfiles/qrcode.js"></script>
 
 
@@ -790,7 +789,7 @@
                         }, 1000);
                         step4Display = true
                   }
-                  checkOrderResult(data.orderId , null)
+                  checkOrderResult(data.orderId, null)
             }
 
             function uuidv4() {
@@ -924,7 +923,7 @@
             }
 
 
-            function checkOrderResult(orderId , tracking) {
+            function checkOrderResult(orderId, tracking) {
                   console.log('check order result')
                   var checkInterval = setInterval(() => {
                         $.ajax({
@@ -976,7 +975,7 @@
                                           //tx-hash
 
 
-                                         
+
                                           if (!step5Display) {
 
                                                 $('#step-5-frame').show(1000)
@@ -987,18 +986,18 @@
                                           }
 
                                     }
-                                     if (tracking) {
+                                    if (tracking) {
                                           //$('#order-tracking-result').
                                           $('#order-tracking-result').text(`Status: ${res.data.status} - Hash: ${res.data.hash}`)
                                           clearInterval(checkInterval)
 
-                                    }  
+                                    }
                               }),
                               error: ((err) => {
                                     console.info(err)
-                                    if(tracking){
+                                    if (tracking) {
                                           $('#order-tracking-result').text(err.responseJSON.message);
-                                                clearInterval(checkInterval)
+                                          clearInterval(checkInterval)
 
                                     }
                               })
@@ -1024,14 +1023,14 @@
             function checkOrderStatus() {
                   $('#order-tracking-result').text(`Retrieving Data ...`);
                   var orderId = $('#orderId-tracking').val()
-                     checkOrderResult(orderId , 'tracking')
-                     
+                  checkOrderResult(orderId, 'tracking')
+
             }
             function checkOrderOnCookie() {
                   let cookieOrderId = $.cookie('latest_orderid')
                   if (cookieOrderId) {
                         $('#order-tracking-result').text(`You latest order Id moght be: ${cookieOrderId}`);
-                  }else {
+                  } else {
                         $('#order-tracking-result').text(`Could not find anything in cookies. `);
                   }
             }
