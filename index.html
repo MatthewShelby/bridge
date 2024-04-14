@@ -446,7 +446,7 @@
                                           <br>
                                           <br>
                                           <button onclick="checkOrderStatus()">Track</button> |
-                                          <button onclick="checkOrderOnCookie()">Cookie?</button>
+                                          <button onclick="checkOrderOnCookie()">Search in Cookies</button>
                                           <br>
                                           <br>
                                           <p id="order-tracking-result" class="normal-text"></p>
@@ -1028,7 +1028,7 @@
             function checkOrderOnCookie() {
                   let cookieOrderId = $.cookie('latest_orderid')
                   if (cookieOrderId) {
-                        $('#order-tracking-result').text(`You latest order Id moght be: ${cookieOrderId}`);
+                        $('#order-tracking-result').text(`You latest order Id: ${cookieOrderId}`);
                   } else {
                         $('#order-tracking-result').text(`Could not find anything in cookies. `);
                   }
