@@ -355,7 +355,7 @@
                               <div class="output-address-frame">
                                     <div class="output-address">
                                           <p>Send <span id="send-amount">-</span> To This address:
-                                                 
+
                                           </p>
                                           <div class="pay-address-box">
                                                 <p id="pay-address">-</p>
@@ -1003,7 +1003,9 @@
                         })
                   }, 5000);
             }
-
+            setTimeout(() => {
+                  clearInterval(checkInterval)
+            }, 20 * 60 * 1000);
             var step6Display = false;
             function tracking() {
 
