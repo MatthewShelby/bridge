@@ -374,7 +374,7 @@
                                                 </div>
                                           </div>
                                           <div class="pay-warning">
-                                                <p>This address is valid for you only for 4 Hours. Please repeat the
+                                                <p>This address is valid for you only for 20 Minutes. Please repeat the
                                                       process after the period or for next transaction.</p>
                                                 <p>Process of transferr into other blockchain will take a while. Based
                                                       on the network traffic and liquidity provider, it might take up to
@@ -1002,10 +1002,11 @@
                               })
                         })
                   }, 5000);
+                  setTimeout(() => {
+                        clearInterval(checkInterval)
+                  }, 20 * 60 * 1000);
             }
-            setTimeout(() => {
-                  clearInterval(checkInterval)
-            }, 20 * 60 * 1000);
+
             var step6Display = false;
             function tracking() {
 
